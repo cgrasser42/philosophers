@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:43:15 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/05/31 21:41:16 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:45:05 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ pthread_mutex_t	*forks_init(t_data *data)
 	i = 0;
 	while (i < data->_philo_count)
 	{
-		if (pthread_mutex_init(&data->_forks[i++], NULL) != 0)
+		if (pthread_mutex_init(&forks[i], NULL) != 0)
 		{
 			while (--i > -1)
-				pthread_mutex_destroy(&data->_forks[i]);
+				pthread_mutex_destroy(&forks[i]);
 			return (free(forks), NULL);
 		}
 		i++;
@@ -41,6 +41,7 @@ void	forks_destroy(t_data *data)
 	i = 0;
 	while (i < data->_philo_count)
 		pthread_mutex_destroy(&data->_forks[i++]);
+	free(data->_forks);
 }
 
 t_philo	**philos_init(t_data *data)
@@ -57,17 +58,26 @@ t_philo	**philos_init(t_data *data)
 		philos[i] = philo_new(data, i + 1, &data->_forks[i],
 				&data->_forks[(i + 1) % data->_philo_count]);
 		if (!philos[i])
-			return (free_tab(philos), NULL);
+			return (philos_destroy(philos), NULL);
 		i++;
 	}
 	philos[i] = NULL;
 	return (philos);
 }
 
+void	philos_destroy(t_philo **philos)
+{
+	int	i;
+
+	i = 0;
+	while (philos[i])
+		free(philos[i++]);
+	free(philos);
+}
+
 t_data	*data_new(char **av)
 {
 	t_data	*data;
-	int		i;
 
 	data = malloc(sizeof(t_data));
 	if (!data)

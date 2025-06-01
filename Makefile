@@ -6,7 +6,7 @@
 #    By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/31 17:49:26 by cgrasser          #+#    #+#              #
-#    Updated: 2025/05/31 17:53:38 by cgrasser         ###   ########.fr        #
+#    Updated: 2025/06/01 18:30:58 by cgrasser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRC_DIR = src
 INC_DIR = inc
 OBJ_DIR = build
 
-SRC = main.c
+SRC = main.c data.c philo.c utils.c
 
 OBJS = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

@@ -6,15 +6,16 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:00:41 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/05/31 20:13:15 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:39:18 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATA_H
 # define DATA_H
 
-# include "philo.h"
-# include "utils.h"
+# include "philosophers.h"
+
+typedef struct s_philo	t_philo;
 
 typedef struct s_data
 {
@@ -27,5 +28,7 @@ typedef struct s_data
 }	t_data;
 
 t_data	*data_new(char **av);
+void	forks_destroy(t_data *data);
+void	philos_destroy(t_philo **philos);
 
 #endif

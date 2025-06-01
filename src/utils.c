@@ -6,9 +6,11 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 20:11:59 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/05/31 21:41:26 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:19:39 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "utils.h"
 
 long	ft_atol(const char *str)
 {
@@ -35,12 +37,16 @@ long	ft_atol(const char *str)
 	return (to_return * sgn);
 }
 
-void	free_tab(void **tab)
+bool	str_is_numeric(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (tab[i])
-		free(tab[i++]);
-	free(tab);
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (false);
+		i++;
+	}
+	return (true);
 }
