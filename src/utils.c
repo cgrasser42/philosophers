@@ -6,11 +6,28 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 20:11:59 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/01 18:19:39 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/03 18:24:28 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include "philosophers.h"
+
+long	get_time(void)
+{
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1e3 + tv.tv_usec / 1e3);
+}
+
+void	precise_sleep(long ms)
+{
+	long	start_time;
+
+	start_time = get_time();
+	while ((get_time() - start_time) < ms)
+		usleep(100);
+}
 
 long	ft_atol(const char *str)
 {

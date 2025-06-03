@@ -6,11 +6,11 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:43:15 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/01 18:45:05 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/02 20:47:47 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "data.h"
+#include "philosophers.h"
 
 pthread_mutex_t	*forks_init(t_data *data)
 {
