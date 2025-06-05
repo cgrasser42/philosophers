@@ -6,7 +6,7 @@
 #    By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/31 17:49:26 by cgrasser          #+#    #+#              #
-#    Updated: 2025/06/01 18:30:58 by cgrasser         ###   ########.fr        #
+#    Updated: 2025/06/05 17:37:21 by cgrasser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,14 @@ RM = rm -rf
 SRC_DIR = src
 INC_DIR = inc
 OBJ_DIR = build
-
-SRC = main.c data.c philo.c utils.c
+	
+SRC = data/data.c data/philos.c data/forks.c \
+	main.c philo.c utils.c
 
 OBJS = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
 all: $(BIN)

@@ -6,73 +6,43 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:43:15 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/02 20:47:47 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:48:57 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-pthread_mutex_t	*forks_init(t_data *data)
+bool	mutex_init(t_data *data)
 {
-	pthread_mutex_t	*forks;
-	int				i;
+	int	i;
 
-	forks = malloc(sizeof(pthread_mutex_t) * data->_philo_count);
-	if (!forks)
-		return (NULL);
+	if (pthread_mutex_init(&data->_mutex_stopped, NULL) != 0)
+	{
+		return (false);
+	}
 	i = 0;
 	while (i < data->_philo_count)
 	{
-		if (pthread_mutex_init(&forks[i], NULL) != 0)
+		if (pthread_mutex_init(&data->_philos[i]->_mutex_last_meal, NULL) != 0)
 		{
 			while (--i > -1)
-				pthread_mutex_destroy(&forks[i]);
-			return (free(forks), NULL);
+				pthread_mutex_destroy(&data->_philos[i]->_mutex_last_meal);
+			pthread_mutex_destroy(&data->_mutex_stopped);
+			return (false);
 		}
 		i++;
 	}
-	return (forks);
+	return (true);
 }
 
-void	forks_destroy(t_data *data)
+void	mutex_destroy(t_data *data)
 {
 	int	i;
 
+	pthread_mutex_destroy(&data->_mutex_stopped);
 	i = 0;
 	while (i < data->_philo_count)
-		pthread_mutex_destroy(&data->_forks[i++]);
-	free(data->_forks);
-}
-
-t_philo	**philos_init(t_data *data)
-{
-	t_philo	**philos;
-	int		i;
-
-	philos = malloc(sizeof(t_philo *) * (data->_philo_count + 1));
-	if (!philos)
-		return (NULL);
-	i = 0;
-	while (i < data->_philo_count)
-	{
-		philos[i] = philo_new(data, i + 1, &data->_forks[i],
-				&data->_forks[(i + 1) % data->_philo_count]);
-		if (!philos[i])
-			return (philos_destroy(philos), NULL);
-		i++;
-	}
-	philos[i] = NULL;
-	return (philos);
-}
-
-void	philos_destroy(t_philo **philos)
-{
-	int	i;
-
-	i = 0;
-	while (philos[i])
-		free(philos[i++]);
-	free(philos);
+		pthread_mutex_destroy(&data->_philos[i++]->_mutex_last_meal);
 }
 
 t_data	*data_new(char **av)
@@ -92,5 +62,6 @@ t_data	*data_new(char **av)
 	data->_time_to_die = ft_atol(av[1]);
 	data->_time_to_eat = ft_atol(av[2]);
 	data->_time_to_sleep = ft_atol(av[3]);
+	mutex_init(data);
 	return (data);
 }
