@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 17:15:04 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/14 17:21:26 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:32:55 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 
 # include "utils.h"
 
+# ifndef LOGS
+#  define LOGS false
+# endif
+
+#define LOG_STEP(...) do { if (LOGS) printf(__VA_ARGS__); } while (0)
+
 # include <pthread.h>
 # include <stdlib.h>
 # include <errno.h>
 # include <stdio.h>
-
-typedef struct s_data	t_data;
 
 typedef struct s_mutex
 {
@@ -28,6 +32,8 @@ typedef struct s_mutex
 	bool			_is_set;
 	pthread_mutex_t	_mutex;
 }	t_mutex;
+
+typedef struct s_data	t_data;
 
 typedef struct s_philo
 {

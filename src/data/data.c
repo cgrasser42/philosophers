@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:43:15 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/14 17:21:46 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:59:11 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ bool	data_destroy(t_data *data)
 {
 	bool	all_data_destroy;
 
-	all_data_destroy = true;
 	if (!data)
-		return (all_data_destroy);
+		return (true);
+	all_data_destroy = true;
 	if (!philos_destroy(data->_philos))
 		all_data_destroy = false;
 	if (!forks_destroy(data))
 		all_data_destroy = false;
 	free(data);
-	return (true);
+	return (all_data_destroy);
 }

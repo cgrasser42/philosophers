@@ -6,7 +6,7 @@
 #    By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/31 17:49:26 by cgrasser          #+#    #+#              #
-#    Updated: 2025/06/14 17:03:35 by cgrasser         ###   ########.fr        #
+#    Updated: 2025/06/14 18:21:30 by cgrasser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ BIN = philo
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
+LOG_CFLAGS = -DLOGS=true
 RM = rm -rf
 
 SRC_DIR = src
@@ -30,6 +31,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -I $(INC_DIR) -c $< -o $@
 
 all: $(BIN)
+	
+logs: CFLAGS += $(LOG_CFLAGS)
+logs: re
 
 $(BIN): $(OBJ_DIR) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(BIN)

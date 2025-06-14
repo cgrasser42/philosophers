@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 03:33:09 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/14 17:25:25 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:07:05 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ bool	forks_init(t_data *data)
 	if (!data->_forks)
 		return (false);
 	i = 0;
-	printf("forks_init() =>\n");
+	LOG_STEP("forks_init() =>\n");
 	while (i < data->_philo_count)
 	{
-		printf("_forks[%3d] => ", i);
+		LOG_STEP("_forks[%3d] => ", i);
 		if (!mutex_init(&data->_forks[i], "_fork_mutex"))
 			return (false);
 		i++;
@@ -40,10 +40,10 @@ bool	forks_destroy(t_data *data)
 		return (true);
 	all_mutexes_destroyed = true;
 	i = 0;
-	printf("\nforks_destroy() =>\n");
+	LOG_STEP("\nforks_destroy():\n");
 	while (i < data->_philo_count)
 	{
-		printf("_forks[%3d] => ", i);
+		LOG_STEP("_forks[%3d] => ", i);
 		if (!mutex_destroy(&data->_forks[i]))
 			all_mutexes_destroyed = false;
 		i++;

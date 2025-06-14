@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 17:19:57 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/14 17:25:14 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:15:26 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ bool	philos_init(t_data *data)
 	if (!data->_philos)
 		return (false);
 	i = 0;
-	printf("\nphilos_init() =>\n");
+	LOG_STEP("\nphilos_init() =>\n");
 	while (i < data->_philo_count)
 	{
-		printf("_philos[%3d] =>\n", i);
+		LOG_STEP("_philos[%3d] =>\n", i);
 		data->_philos[i] = philo_new(data, i + 1);
 		if (!data->_philos[i]
 			|| !mutex_init(&data->_philos[i]->_last_meal_mutex, "_last_meal_mutex")
@@ -60,10 +60,10 @@ bool	philos_destroy(t_philo **philos)
 		return (true);
 	all_mutexes_destroyed = true;
 	i = 0;
-	printf("\nphilos_destroy() =>\n");
+	LOG_STEP("\nphilos_destroy() =>\n");
 	while (philos[i])
 	{
-		printf("_philos[%3d] =>\n", i);
+		LOG_STEP("_philos[%3d] =>\n", i);
 		if (!mutex_destroy(&philos[i]->_last_meal_mutex))
 			all_mutexes_destroyed = false;
 		if (!mutex_destroy(&philos[i]->_eat_mutex))
