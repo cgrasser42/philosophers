@@ -6,62 +6,42 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:43:15 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/05 19:48:57 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/14 17:21:46 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "data.h"
 
-bool	mutex_init(t_data *data)
+bool	data_init(t_data **data, int ac, char **av)
 {
-	int	i;
-
-	if (pthread_mutex_init(&data->_mutex_stopped, NULL) != 0)
-	{
+	*data = malloc(sizeof(t_data));
+	if (!data)
 		return (false);
-	}
-	i = 0;
-	while (i < data->_philo_count)
-	{
-		if (pthread_mutex_init(&data->_philos[i]->_mutex_last_meal, NULL) != 0)
-		{
-			while (--i > -1)
-				pthread_mutex_destroy(&data->_philos[i]->_mutex_last_meal);
-			pthread_mutex_destroy(&data->_mutex_stopped);
-			return (false);
-		}
-		i++;
-	}
+	(*data)->_philo_count = ft_atol(av[0]);
+	(*data)->_time_to_die = ft_atol(av[1]);
+	(*data)->_time_to_eat = ft_atol(av[2]);
+	(*data)->_time_to_sleep = ft_atol(av[3]);
+	(*data)->_stopped = false;
+	if (ac == 6)
+		(*data)->_number_of_times_each_philos_must_eat = ft_atol(av[4]);
+	else
+		(*data)->_number_of_times_each_philos_must_eat = -1;
+	if (!forks_init(*data) || !philos_init(*data))
+		return (false);
 	return (true);
 }
 
-void	mutex_destroy(t_data *data)
+bool	data_destroy(t_data *data)
 {
-	int	i;
+	bool	all_data_destroy;
 
-	pthread_mutex_destroy(&data->_mutex_stopped);
-	i = 0;
-	while (i < data->_philo_count)
-		pthread_mutex_destroy(&data->_philos[i++]->_mutex_last_meal);
-}
-
-t_data	*data_new(char **av)
-{
-	t_data	*data;
-
-	data = malloc(sizeof(t_data));
+	all_data_destroy = true;
 	if (!data)
-		return (NULL);
-	data->_philo_count = ft_atol(av[0]);
-	data->_forks = forks_init(data);
-	if (!data->_forks)
-		return (free(data), NULL);
-	data->_philos = philos_init(data);
-	if (!data->_philos)
-		return (forks_destroy(data), free(data), NULL);
-	data->_time_to_die = ft_atol(av[1]);
-	data->_time_to_eat = ft_atol(av[2]);
-	data->_time_to_sleep = ft_atol(av[3]);
-	mutex_init(data);
-	return (data);
+		return (all_data_destroy);
+	if (!philos_destroy(data->_philos))
+		all_data_destroy = false;
+	if (!forks_destroy(data))
+		all_data_destroy = false;
+	free(data);
+	return (true);
 }

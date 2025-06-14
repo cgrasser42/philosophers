@@ -6,7 +6,7 @@
 #    By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/31 17:49:26 by cgrasser          #+#    #+#              #
-#    Updated: 2025/06/05 17:37:21 by cgrasser         ###   ########.fr        #
+#    Updated: 2025/06/14 17:03:35 by cgrasser         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,8 @@ SRC_DIR = src
 INC_DIR = inc
 OBJ_DIR = build
 	
-SRC = data/data.c data/philos.c data/forks.c \
-	main.c philo.c utils.c
+SRC = data/data.c data/philo.c data/mutex.c data/fork.c \
+	main.c utils.c
 
 OBJS = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
@@ -45,4 +45,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re philo
+.PHONY: all clean fclean re

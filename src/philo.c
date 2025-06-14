@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:03:59 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/05 19:49:37 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/06 00:23:16 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,12 @@ static bool	eat(t_philo *philo)
 	philo->_last_meal_time = get_time();
 	pthread_mutex_unlock(&philo->_mutex_last_meal);
 	philo->_total_meals++;
+	if (philo->_total_meals == philo->_data->_number_of_times_each_philos_must_eat)
+	{
+		pthread_mutex_lock(&philo->_mutex_eat);
+		philo->_have_to_eat = true;
+		pthread_mutex_unlock(&philo->_mutex_eat);
+	}
 	precise_sleep(philo->_data->_time_to_eat);
 	pthread_mutex_unlock(second);
 	pthread_mutex_unlock(first);
@@ -100,6 +106,8 @@ void	*philosopher_life(void *arg)
 			break ;
 		if (!console_log_mutex(philo, "is sleeping"))
 			break ;
+		if (philo->_id % 2 == 0)
+			precise_sleep(philo->_data->_time_to_eat / 2);
 		precise_sleep(philo->_data->_time_to_sleep);
 		if (!console_log_mutex(philo, "is thinking"))
 			break ;
