@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 17:15:04 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/14 18:32:55 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/15 01:18:37 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,28 @@
 
 # include "utils.h"
 
-# ifndef LOGS
-#  define LOGS false
-# endif
-
-#define LOG_STEP(...) do { if (LOGS) printf(__VA_ARGS__); } while (0)
-
 # include <pthread.h>
 # include <stdlib.h>
 # include <errno.h>
 # include <stdio.h>
+
+# ifndef LOGS
+#  define LOGS false
+# endif
+
+# define INIT_SUCCESS	"initialized successfully"
+# define INVALID_ATTR	"failed to initialize (invalid attributes)"
+# define NO_MEMORY		"failed to initialize (not enough memory)"
+# define RESOURCE_LIMIT	"failed to initialize (system resource limit reached)"
+# define NO_PERMISSION	"failed to initialize (insufficient permissions)"
+# define UNKNOWN		"failed to initialize (unknown error code %d)"
+
+# define DESTROY_SUCCESS "destroyed successfully"
+# define DESTROY_IN_USE	 "is still locked or in use"
+# define DESTROY_INVALID "is invalid or not properly initialized"
+# define DESTROY_UNKNOWN "failed to destroy (unknown error code %d)"
+
+typedef struct s_data	t_data;
 
 typedef struct s_mutex
 {
@@ -32,8 +44,6 @@ typedef struct s_mutex
 	bool			_is_set;
 	pthread_mutex_t	_mutex;
 }	t_mutex;
-
-typedef struct s_data	t_data;
 
 typedef struct s_philo
 {
