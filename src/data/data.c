@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:43:15 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/14 17:59:11 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:07:19 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@ bool	data_init(t_data **data, int ac, char **av)
 	(*data)->_time_to_sleep = ft_atol(av[3]);
 	(*data)->_stopped = false;
 	if (ac == 6)
-		(*data)->_number_of_times_each_philos_must_eat = ft_atol(av[4]);
+		(*data)->_number_of_times_philos_must_eat = ft_atol(av[4]);
 	else
-		(*data)->_number_of_times_each_philos_must_eat = -1;
-	if (!forks_init(*data) || !philos_init(*data))
+		(*data)->_number_of_times_philos_must_eat = -1;
+	if (LOGS)
+		printf("data_init():\n");
+	if (!mutex_init(&(*data)->_stopped_mutex, "_stopped_mutex")
+		|| !forks_init(*data)
+		|| !philos_init(*data))
 		return (false);
 	return (true);
 }
@@ -38,10 +42,11 @@ bool	data_destroy(t_data *data)
 	if (!data)
 		return (true);
 	all_data_destroy = true;
-	if (!philos_destroy(data->_philos))
-		all_data_destroy = false;
-	if (!forks_destroy(data))
-		all_data_destroy = false;
+	if (LOGS)
+		printf("data_destroy():\n");
+	all_data_destroy &= mutex_destroy(&data->_stopped_mutex);
+	all_data_destroy &= philos_destroy(data->_philos);
+	all_data_destroy &= forks_destroy(data);
 	free(data);
 	return (all_data_destroy);
 }

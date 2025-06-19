@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 17:15:04 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/15 02:58:31 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:08:55 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,14 @@
 # define DESTROY_UNKNOWN "failed to destroy (unknown error code %d)"
 
 /**
+ * @brief Forward declaration of the s_data structure.
+ *
+ * This allows the use of pointers to t_data in structures (like t_philo)
+ * that are defined before the full definition of s_data is available.
+ */
+typedef struct s_data	t_data;
+
+/**
  * @struct s_mutex
  * @brief Wrapper for pthread mutex with additional metadata for logging.
  *
@@ -130,8 +138,8 @@ typedef struct s_philo
 	int				_total_meals; /**< Number of meals eaten */
 	long			_time_to_start; /**< Timestamp for simulation start */
 	pthread_t		_thread; /**< Thread representing the philosopher */
-	pthread_mutex_t	*_left_fork; /**< Pointer to left fork mutex */
-	pthread_mutex_t	*_right_fork; /**< Pointer to right fork mutex */
+	pthread_mutex_t	*_first_fork; /**< Pointer to first fork mutex */
+	pthread_mutex_t	*_second_fork; /**< Pointer to second fork mutex */
 	long			_last_meal_time; /**< Timestamp of last meal */
 	t_mutex			_last_meal_mutex; /**< Mutex protecting last meal time */
 	bool			_have_to_eat; /**< Flag to indicate if needs to eat */

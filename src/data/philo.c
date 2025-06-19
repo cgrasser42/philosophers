@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/05 17:19:57 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/15 01:19:41 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/20 01:18:10 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,17 @@ static t_philo	*philo_new(t_data *data, int id)
 		return (NULL);
 	philo->_id = id;
 	philo->_data = data;
-	philo->_left_fork = &data->_forks[id - 1]._mutex;
-	philo->_right_fork = &data->_forks[id % data->_philo_count]._mutex;
+	if (&data->_forks[id - 1]._mutex
+		< &data->_forks[id % data->_philo_count]._mutex)
+	{
+		philo->_first_fork = &data->_forks[id - 1]._mutex;
+		philo->_second_fork = &data->_forks[id % data->_philo_count]._mutex;
+	}
+	else
+	{
+		philo->_first_fork = &data->_forks[id % data->_philo_count]._mutex;
+		philo->_second_fork = &data->_forks[id - 1]._mutex;
+	}
 	philo->_total_meals = 0;
 	philo->_have_to_eat = false;
 	return (philo);
