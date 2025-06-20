@@ -6,7 +6,7 @@
 /*   By: cgrasser <cgrasser@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 18:03:59 by cgrasser          #+#    #+#             */
-/*   Updated: 2025/06/20 00:38:13 by cgrasser         ###   ########.fr       */
+/*   Updated: 2025/06/20 08:27:32 by cgrasser         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void	*philosopher_life(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	philo->_time_to_start = get_time();
 	pthread_mutex_lock(&philo->_last_meal_mutex._mutex);
 	philo->_last_meal_time = get_time();
 	pthread_mutex_unlock(&philo->_last_meal_mutex._mutex);
